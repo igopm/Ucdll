@@ -4,52 +4,47 @@
 //=====================================================================================================
 #include <iostream>
 #include <fstream>
-
+#include <cstring>
 #include <vector>
 #include "./UCDll.h"
 //=====================================================================================================
-static void fatal(const std::string &error){
-    std::cerr <<"ERROR::"<< error << "!!!" << std::endl;
-    exit(1);
-}
-static void fatal2(const std::string &error, const std::string &path){
-    std::cerr <<"ERROR::"<< error << "!!! --> " << path << std::endl;
-    exit(1);
-}
-static std::vector<std::string> readFile2(const std::string &inFile, const std::string &path){
+int main(int argc, char *argv[]){
     using namespace std;
-    vector<string> vecRes;
-    string resIn, resOut;
-    ifstream in(inFile);
-    if(!in)
-        fatal2("BAD_IN_FILE", inFile);
-    ofstream out(path + "OUT_UCDll.txt");
-    if(!out)
-        fatal2("DO_NOT_CREATE_FOLDER", path);
-    while(in >> resIn) {
-        int temp;
-        for (int i = resIn.size()-1; i >= 0 ; --i ){
-            if((char)resIn[i] == '\\'){
-                temp = i;
-                break;
-            }
-        }
-        resOut = path + resIn.substr(temp + 1, resIn.size());
-        out << resOut << endl;
-        vecRes.push_back(resOut);
-    }
-    return vecRes;
-}
-int main(){
-    using namespace std;
+    using namespace ucd;
     /// TEST 1
-    for (string n : ucd::Ucdll::readAndWrite("d:\\Kaa_test\\1\\In.txt", "D:\\")) {
-        cout << n << '\n';
-    }
+    //    for (string n : ucd::Ucdll::readAndWrite("d:\\Kaa_test\\1\\In.txt", "D:\\UCD\\")) {
+    //        cout << n << '\n';
+    //    }
+
     /// TEST 2
-    const string s1 = "D:\\Kaa_test\\1\\testIn.txt";
-    const string s2 = "D:\\Kaa_test\\2\\testOut.txt";
-    ucd::Ucdll::mainUcd(s1, s2);
+    //    for (string n : ucd::Ucdll::checkingAndCleaning("C:\\Users\\West\\Desktop\\test21.txt")) {
+    //        cout << n << '\n';
+    //    }
+
+    /// TEST 3
+    //    for (string n : ucd::Ucdll::readAndWrite(ucd::Ucdll::checkingAndCleaning("C:\\Users\\West\\Desktop\\test21.txt", "D:\\TEMP\\"),"D:\\TEMP\\")) {
+    //        cout << n << '\n';
+    //    }
+
+    /// TEST 4
+    ///
+    string inTxt = "BAD_TXT";
+    string path = "D:\\TEMP\\";
+    if (argc >= 2)
+        inTxt = argv[1];
+    if (argc >= 3)
+        path = argv[2];
+    cout << "UCopyDll v.1.0\n";
+    cout << "UCD: <*\\path\\in.txt> <path>\n";
+    cout << "in.txt = " << inTxt << endl;
+    cout << "path = " << path << endl;
+    mainUcdNew(inTxt, path);
+
+    //    mainUcdNew("C:\\Users\\West\\Desktop\\test21.txt", "D:\\TEMP\\");
+    /// TEST 5
+    //    const string s1 = "D:\\Kaa_test\\1\\testIn.txt";
+    //    const string s2 = "D:\\Kaa_test\\2\\testOut.txt";
+    //    ucd::Ucdll::mainUcd(s1, s2);
     return 0;
 }
 //=====================================================================================================
