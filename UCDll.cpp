@@ -5,35 +5,35 @@
 //=====================================================================================================
 #include "./UCDll.h"
 //=====================================================================================================
-#include <fstream>
+//#include <fstream>
 #if defined(_WIN32) || defined(WIN32)
 #include <windows.h>
 #endif
 //=====================================================================================================
 namespace ucd {
 //=====================================================================================================
-void mainUcdOld(const std::string &inFile, const std::string &inFile1){
-    using namespace std;
-    int count = 0;
-    string inPath, outPath;
-    ifstream in(inFile);
-    ifstream in1(inFile1);
+//void mainUcdOld(const std::string &inFile, const std::string &inFile1){
+//    using namespace std;
+//    int count = 0;
+//    string inPath, outPath;
+//    ifstream in(inFile);
+//    ifstream in1(inFile1);
 
-    if (!in)
-        fatal(inFile);
-    if (!in1)
-        fatal(inFile1);
+//    if (!in)
+//        fatal(inFile);
+//    if (!in1)
+//        fatal(inFile1);
 
-    while(in >> inPath && in1 >> outPath){
-#if defined(_WIN32) || defined(WIN32)
-        inCopyOutWin(inPath, outPath);
-#else
-        inCopyOut(inPath, outPath);
-#endif
-        ++count;
-    }
-    cout << "count : " << count << endl;
-}
+//    while(in >> inPath && in1 >> outPath){
+//#if defined(_WIN32) || defined(WIN32)
+//        inCopyOutWin(inPath, outPath);
+//#else
+//        inCopyOut(inPath, outPath);
+//#endif
+//        ++count;
+//    }
+//    cout << "count : " << count << endl;
+//}
 
 void mainUcdNew(const std::string &inFile, const std::string &path){
     using namespace std;
@@ -42,11 +42,7 @@ void mainUcdNew(const std::string &inFile, const std::string &path){
     for(int i = 0; i < checkingAndCleaning(inFile, path).size(); ++i){
         string inPath = checkingAndCleaning(inFile, path)[i];
         string outPath = readAndWrite(checkingAndCleaning(inFile, path), path)[i];
-#if defined(_WIN32) || defined(WIN32)
-        inCopyOutWin(inPath, outPath);
-#else
-        inCopyOut(inPath, outPath);
-#endif
+        inCopyOutBoost(inPath, outPath);
         ++count;
     }
     cout << "count : " << count << endl;
@@ -56,7 +52,7 @@ void fatal(const std::string &error){
     std::cerr <<"ERROR::"<< error << "!!!" << std::endl;
     exit(1);
 }
-void fatal2(const std::string &error, const std::string &path){
+void fatal(const std::string &error, const std::string &path){
     std::cerr <<"ERROR::"<< error << "!!! --> " << path << std::endl;
     exit(1);
 }
@@ -79,9 +75,6 @@ void inCopyOut(const std::string &in, const std::string &out){
         inFile.read(buffer, sizeof(char));
     }
     cout << "OUT : " << out << endl;
-    inFile.close();
-    outFile.close();
-    delete buffer;
 }
 
 void inCopyOutWin(const std::string &in, const std::string &out){
@@ -98,32 +91,32 @@ bool checkLines(std::string &val1, std::string &val2){
         return false;
 }
 //=====================================================================================================
-void readFile(const std::string &inFile){
-    std::string res;
-    std::ifstream in(inFile);
-    if(!in)
-        fatal(inFile);
-    while(in >> res) {
-        std::cout << res << std::endl;
-    }
-}
+//void readFile(const std::string &inFile){
+//    std::string res;
+//    std::ifstream in(inFile);
+//    if(!in)
+//        fatal(inFile);
+//    while(in >> res) {
+//        std::cout << res << std::endl;
+//    }
+//}
 //=====================================================================================================
 std::vector<std::string> readAndWrite(const std::string &inFile, const std::string &path){
     using namespace std;
     if(inFile[inFile.size() - 4]!= '.')
-        fatal2("BAD_IN_FILE", inFile);
+        fatal("BAD_IN_FILE", inFile);
 
     if(path.back()!= '\\')
-        fatal2("BAD_PATH", path);
+        fatal("BAD_PATH", path);
 
     vector<string> vecRes;
     string resIn, resOut;
     ifstream in(inFile);
     if(!in)
-        fatal2("BAD_IN_FILE", inFile);
+        fatal("BAD_IN_FILE", inFile);
     ofstream out(path + "temp_OUT_UCDll.txt");
     if(!out)
-        fatal2("DO_NOT_CREATE_FOLDER(S)", path);
+        fatal("DO_NOT_CREATE_FOLDER(S)", path);
     while(in >> resIn) {
         int temp;
         for (int i = resIn.size() - 1; i >= 0 ; --i){
@@ -142,14 +135,14 @@ std::vector<std::string> readAndWrite(const std::string &inFile, const std::stri
 std::vector<std::string> readAndWrite(const std::vector<std::string> &inVector, const std::string &path){
     using namespace std;
     if(path.back()!= '\\')
-        fatal2("BAD_PATH", path);
+        fatal("BAD_PATH", path);
 
     vector<string> vecRes;
     string resOut;
 
     ofstream out(path + "temp_READ_AND_WRITE_OUT_RES.txt");
     if(!out)
-        fatal2("DO_NOT_CREATE_FOLDER(S)", path);
+        fatal("DO_NOT_CREATE_FOLDER(S)", path);
 
 
     for (string resIn : inVector) {
@@ -173,18 +166,18 @@ std::vector<std::string> checkingAndCleaning(const std::string &inFile, const st
     string resIn;
 
     if(inFile[inFile.size() - 4]!= '.')
-        fatal2("BAD_IN_FILE", inFile);
+        fatal("BAD_IN_FILE", inFile);
 
     if(path.back()!= '\\')
-        fatal2("BAD_PATH", path);
+        fatal("BAD_PATH", path);
 
     ifstream in(inFile);
     if(!in)
-        fatal2("BAD_IN_FILE", inFile);
+        fatal("BAD_IN_FILE", inFile);
 
     ofstream out(path + "temp_CHECK_OUT_RES.txt");
     if(!out)
-        fatal2("DO_NOT_CREATE_FOLDER(S)", path);
+        fatal("DO_NOT_CREATE_FOLDER(S)", path);
 
     while(in >> resIn) {
         string check = "c:\\msys";
@@ -196,6 +189,14 @@ std::vector<std::string> checkingAndCleaning(const std::string &inFile, const st
     }
     return vecRes;
 }
+
+void inCopyOutBoost(const boost::filesystem::path &inPath, const boost::filesystem::path &outPath){
+    using namespace std;
+    cout << "BOOST::IN : " << inPath << endl;
+    boost::filesystem::copy_file(inPath, outPath);
+    cout << "BOOST::OUT : " << outPath << endl;
+}
+
 //=====================================================================================================
 }
 //=====================================================================================================
