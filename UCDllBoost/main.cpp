@@ -40,6 +40,7 @@ int main(int argc, char *argv[]){
     cout << "in.txt = " << inTxt << endl;
     cout << "path = " << path << endl;
     cout << "------------------------------" << endl;
+    boost::filesystem::create_directory("D:\\UCDll_TEMP");
     mainUcdNew(inTxt, path);
     //=================================================================================================
     /// TEST 5
