@@ -1,5 +1,5 @@
 # Ucdll
-# ver. 1.0
+## Getting Started
 Hi! This is a program for get dll libraries.
 How is it work?
 1. Download Dependency walker;
