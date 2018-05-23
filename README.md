@@ -10,3 +10,7 @@ How is it work?
 6. Coppy your text file into work space, where UCDllBoost.exe is.
 7. Start cmd, and start UCDllBoost with name your text-document.
     UCDllBoost program_in.txt
+    
+* [Dropwizard](https://www.linkedin.com/in/igor-maschikevich-81182a109/) - The web framework used
+* [Maven](https://maven.apache.org/) - Dependency Management
+* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
